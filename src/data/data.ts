@@ -1,0 +1,78 @@
+import noteDropImage from '../static/Notedrop.jpg';
+import agrivoyage from '../static/AgriVoyage.jpg';
+import escaperoom from '../static/thinkandescape.jpg';
+import Transit from '../static/Transit.jpg';
+export const projects = [
+  {
+    id: 'escape-room-chatbot',
+    title: 'Escape Room Chatbot',
+    description: 'LLM-Powered Escape Room Learning Platform that adapts to user age and interaction, delivering personalized educational experiences through AI storytelling and visual generation.',
+    overview: 'Think and Escape is a next-gen AI learning platform that blends gamification with large language models (LLMs) to create dynamic, age-specific escape room adventures. It secured second place in the TEJAS_2025 hackathon for its innovative use of DeepSeek and Stable Diffusion to enhance engagement and comprehension.',
+    problem: 'Traditional educational platforms often struggle to maintain engagement and fail to offer personalized learning experiences. Our challenge was to build an intelligent, interactive platform that adapts to users’ age and interest, while making learning both fun and effective.',
+    research: 'Through market analysis and testing, we found that combining real-time LLM responses with visual storytelling significantly boosted engagement across age groups. Personalized game flows and age-aware difficulty levels led to measurable improvements in retention and learning outcomes.',
+    process: 'Using agile methodology, we developed the platform in iterative phases: LLM integration via DeepSeek for theme, puzzle, and answer generation; Stable Diffusion for dynamic image rendering; and Django session management for adaptive learning paths. We also incorporated fuzzy matching and NLP libraries like SpaCy for smarter user input handling.',
+    outcome: 'The platform achieved 85% user engagement and improved learning comprehension by 40%. By tailoring puzzles and visuals based on user age and responses, Think and Escape showcased the powerful impact of LLMs in education and interactive digital experiences.',
+    image: escaperoom,
+    skills: ['Python', 'Django', 'NLP', 'LLM', 'Diffusion Model'],
+    demoLink: 'https://thinkandescape.vercel.app/',
+    githubLink: 'https://github.com/swagathreddy/escape',
+    type: 'AI Educational Platform',
+    timeline: '2024',
+    duration: '3 months',
+    role: 'Lead Developer'
+  },
+  {
+    id: 'agrivoyage',
+    title: 'Agrivoyage',
+    description: 'A platform connecting farmers with tourists, creating new income streams for rural communities.',
+    overview: 'Agrivoyage is an innovative platform that bridges the gap between agricultural communities and tourism, creating sustainable income sources for farmers while offering authentic experiences for travelers.',
+    problem: 'Rural farming communities often struggle with inconsistent income. Meanwhile, urban dwellers increasingly seek authentic experiences away from commercial tourism. There was no effective platform connecting these two groups.',
+    research: 'Through interviews with farmers and potential tourists, we identified key features that would make the platform attractive to both groups. We also studied successful agritourism models from different countries.',
+    process: 'We developed the platform using a user-centered design approach, creating prototypes that were tested with both farmers and potential tourists. The feedback loop helped refine the booking process and communication tools.',
+    outcome: 'The platform successfully increased participating farmers\' income by approximately 30%. Tourist satisfaction ratings show a 92% positive response rate, with many highlighting the authentic experiences as the main value.',
+    image: agrivoyage,
+    skills: ['JavaScript', 'Django', 'HTML', 'CSS', 'PostgreSQL'],
+    demoLink: 'https://agrivoyagenew.vercel.app/',
+    githubLink: 'https://github.com/swagathreddy/Agrivoyage',
+    type: 'Social Impact Platform',
+    timeline: '2023',
+    duration: '1 months',
+    role: 'Lead Developer'
+  },
+  {
+    id: 'transitxpress',
+    title: 'TransitXpress',
+    description: 'A conductor-less transit system leveraging automation and AI to revolutionize public transportation.',
+    overview: 'TransitXpress is a paradigm shift in public transportation that leverages automation, AI, sensors, and mobile applications to eliminate the need for traditional bus conductors while enhancing operational efficiency and user experience.',
+    problem: 'Traditional transit systems face challenges with operational costs, efficiency, and passenger convenience. Many existing platforms suffered from performance issues during peak times and complex interfaces that led to 70% of users abandoning bookings.',
+    research: 'We studied the evolution of transportation technologies and analyzed competing solutions. Our research found that a modern conductor-less system could significantly reduce operational costs while improving passenger experience through automation and real-time tracking.',
+    process: 'We developed the platform using cutting-edge technologies including artificial intelligence and sensor integration. The system was built on a microservices architecture to ensure different components could scale independently based on demand, with a focus on database optimization and frontend performance.',
+    outcome: 'TransitXpress successfully handles 1000+ concurrent users with minimal latency and offers enhanced operational efficiency, cost-effectiveness, and passenger convenience. Key benefits include 65% increase in booking completion rates, environmental sustainability through optimized routes, and seamless ticketing through user-friendly mobile applications.',
+    image: Transit,
+    skills: ['Django', 'HTML', 'CSS', 'Javascript', 'PostgreSQL'],
+    demoLink: 'https://transitxpress-production.up.railway.app/',
+    githubLink: 'https://github.com/swagathreddy/transitxpress',
+    type: 'Smart Transportation Platform',
+    timeline: '2023',
+    duration: '1 months',
+    role: 'Full Stack Developer'
+  },
+  {
+    id: 'note-drop',
+    title: 'Note Drop',
+    description: 'A sleek note-taking application with robust user authentication and task management capabilities.',
+    overview: 'Note Drop is a modern note-taking and to-do list application featuring a clean, intuitive interface. The platform allows users to create, manage, and organize their daily notes and tasks with a seamless user experience and strong security measures.',
+    problem: 'While many note-taking apps exist, most lack the combination of simplicity, aesthetic appeal, and robust security. Users needed a straightforward yet powerful tool to manage their daily thoughts and tasks without unnecessary complexity.',
+    research: 'We analyzed user behavior with existing note-taking applications and found that users valued clean interfaces and essential functionality over complex features. Security and data privacy were also key concerns for potential users.',
+    process: 'The development followed a user-centered approach with a focus on creating an elegant, intuitive interface. We implemented a secure authentication system and ensured responsive design worked flawlessly across devices. The backend was built with Django for scalability and security.',
+    outcome: 'Note Drop successfully delivers a frictionless note-taking experience with essential functionality like note creation, deletion, and completion marking. User feedback highlights the application\'s clean design and ease of use, resulting in high user retention rates.',
+    image: noteDropImage,
+    skills: ['React', 'Django', 'PostgreSQL', 'Vercel', 'Authentication', 'UI/UX Design'],
+    demoLink: 'https://note-drop.vercel.app/',
+    githubLink: 'https://github.com/swagathreddy/Notes-frontend',
+    type: 'Productivity Application',
+    timeline: '2024',
+    duration: '5 days',
+    role: 'Full Stack Developer'
+  },
+];
