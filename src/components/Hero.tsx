@@ -163,7 +163,7 @@ const Hero = () => {
                 key={i}
                 className="text-pink-400 font-bold text-2xl md:text-3xl lg:text-4xl tracking-wider mx-6"
               >
-                Always learning, always evolving —
+                Always Learning, Always Evolving —
               </span>
             ))}
           </div>
