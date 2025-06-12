@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Mail, MapPin, Phone, Send, MessageCircle, Calendar, Zap } from 'lucide-react';
+import { Mail, MapPin, Phone, Send, MessageCircle, Calendar, Zap, CheckCircle, XCircle } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -10,6 +10,8 @@ const Contact: React.FC = () => {
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -34,18 +36,59 @@ const Contact: React.FC = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    // Reset status when user starts typing
+    if (submitStatus !== 'idle') {
+      setSubmitStatus('idle');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus('idle');
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    console.log('Form submitted:', formData);
-    setIsSubmitting(false);
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    try {
+      // EmailJS configuration
+      const serviceId = 'service_03kru0n'; // Replace with your EmailJS service ID
+      const templateId = 'template_69rfaim'; // Replace with your EmailJS template ID
+      const publicKey = 'Qzw_C2-vA3uRGdowP'; // Replace with your EmailJS public key
+      
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_email: 'anirudhbhupathi2030@gmail.com',
+      };
+
+      // Using EmailJS REST API directly (no need for additional npm package)
+      const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          service_id: serviceId,
+          template_id: templateId,
+          user_id: publicKey,
+          template_params: templateParams,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+      
+      console.log('Email sent successfully:', templateParams);
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Email sending failed:', error);
+      setSubmitStatus('error');
+      setErrorMessage('Failed to send message. Please try again or contact me directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactMethods = [
@@ -68,7 +111,7 @@ const Contact: React.FC = () => {
     {
       icon: MapPin,
       title: 'Location',
-      details: 'Hyderbad, Telangana',
+      details: 'Hyderabad, Telangana',
       link: '#',
       gradient: 'from-purple-500 to-pink-500',
       description: 'Available worldwide',
@@ -103,6 +146,27 @@ const Contact: React.FC = () => {
                 <h3 className="text-3xl font-bold text-white mb-4">Start a Conversation</h3>
                 <p className="text-gray-400">Tell me about your vision, and let's bring it to life.</p>
               </div>
+
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <div className="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-2xl flex items-center space-x-3">
+                  <CheckCircle className="text-green-400" size={20} />
+                  <div>
+                    <p className="text-green-400 font-semibold">Message sent successfully!</p>
+                    <p className="text-gray-300 text-sm">I'll get back to you within 24 hours.</p>
+                  </div>
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center space-x-3">
+                  <XCircle className="text-red-400" size={20} />
+                  <div>
+                    <p className="text-red-400 font-semibold">Failed to send message</p>
+                    <p className="text-gray-300 text-sm">{errorMessage}</p>
+                  </div>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -249,14 +313,15 @@ const Contact: React.FC = () => {
 
             {/* Quick actions */}
             <div className="grid grid-cols-2 gap-4">
-              <button className="p-4 bg-gradient-to-br from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-2xl border border-blue-500/30 hover:border-blue-400/50 transition-all duration-300 hover:scale-105">
-                <MessageCircle size={24} className="text-blue-400 mx-auto mb-2" />
-                <span className="text-white font-semibold text-sm">Quick Chat</span>
-              </button>
-              <button className="p-4 bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-2xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:scale-105">
-                <Calendar size={24} className="text-purple-400 mx-auto mb-2" />
-                <span className="text-white font-semibold text-sm">Schedule Call</span>
-              </button>
+              <a
+                href="https://wa.me/919704732968"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-4 bg-gradient-to-br from-green-600/20 to-emerald-600/20 backdrop-blur-sm rounded-2xl border border-green-500/30 hover:border-green-400/50 transition-all duration-300 hover:scale-105 text-center"
+              >
+                <MessageCircle size={24} className="text-green-400 mx-auto mb-2" />
+                <span className="text-white font-semibold text-sm">WhatsApp</span>
+              </a>
             </div>
           </div>
         </div>

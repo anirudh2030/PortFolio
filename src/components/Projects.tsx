@@ -1,46 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ExternalLink, Github, Play, Sparkles } from 'lucide-react';
-import thinkandescape from './thinkandescape.png';
-import Transit from '../static/Transit.jpg';
-import agrivoyage from '../static/AgriVoyage.jpg';
+import { projects } from '../data/data'; // Import your data
 
-const Projects: React.FC = () => {
+// You can also pass this as a prop or use React Router for navigation
+interface ProjectsProps {
+  onProjectClick?: (projectId: string) => void;
+}
+
+const Projects: React.FC<ProjectsProps> = ({ onProjectClick }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
-  const projects = [
-    {
-      title: 'Think And Escape',
-      subtitle: 'EscapeRoom ChatBot',
-      description: 'An advanced AI-powered image recognition platform with real-time processing capabilities and neural network visualization.',
-      image: thinkandescape,
-      technologies: ['React', 'Python', 'TensorFlow', 'WebGL', 'FastAPI'],
-      liveUrl: '#',
-      githubUrl: '#',
-      featured: true,
-    },
-    {
-      title: 'TransitXpress',
-      subtitle: 'Automating Bus Transport',
-      description: 'A conductor-less transit system leveraging automation and AI to revolutionize public transportation.',
-      image: Transit,
-      technologies: ['HTML', 'CSS', 'Django', 'PostgreSQL'],
-      liveUrl: '#',
-      githubUrl: '#',
-      featured: true,
-    },
-    {
-      title: 'AgriVoyage',
-      subtitle: 'One stop hub for weekend farming',
-      description: 'A platform connecting farmers with tourists, creating new income streams for rural communities.',
-      image: agrivoyage,
-      technologies: ['HTML', 'CSS', 'Django', 'PostgreSQL'],
-      liveUrl: '#',
-      githubUrl: '#',
-      featured: false,
-    },
-  ];
+  // Map your data to the component's expected format
+  const featuredProjects = projects.filter(p => 
+    p.id === 'escape-room-chatbot' || p.id === 'transitxpress'
+  );
+  
+  const otherProjects = projects.filter(p => 
+    p.id !== 'escape-room-chatbot' && p.id !== 'transitxpress'
+  );
+
+  const handleProjectClick = (projectId: string) => {
+    if (onProjectClick) {
+      onProjectClick(projectId);
+    }
+    // If you're using React Router, you could also do:
+    // navigate(`/project/${projectId}`);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -84,15 +71,16 @@ const Projects: React.FC = () => {
 
         {/* Featured projects */}
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {projects.filter(p => p.featured).map((project, index) => (
+          {featuredProjects.map((project, index) => (
             <div
-              key={project.title}
-              className={`group relative transition-all duration-1000 ${
+              key={project.id}
+              className={`group relative transition-all duration-1000 cursor-pointer ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
               }`}
               style={{ transitionDelay: `${index * 300}ms` }}
               onMouseEnter={() => setActiveProject(index)}
               onMouseLeave={() => setActiveProject(null)}
+              onClick={() => handleProjectClick(project.id)}
             >
               <div className="relative overflow-hidden rounded-3xl bg-black/60 backdrop-blur-sm border border-white/10 hover:border-white/30 transition-all duration-500 hover:scale-105">
                 {/* Project image */}
@@ -110,13 +98,19 @@ const Projects: React.FC = () => {
                     }`}
                   >
                     <a
-                      href={project.liveUrl}
+                      href={project.demoLink}
+                      onClick={(e) => e.stopPropagation()}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 hover:scale-110 transition-all duration-300"
                     >
                       <Play size={20} className="text-white" />
                     </a>
                     <a
-                      href={project.githubUrl}
+                      href={project.githubLink}
+                      onClick={(e) => e.stopPropagation()}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 hover:scale-110 transition-all duration-300"
                     >
                       <Github size={20} className="text-white" />
@@ -138,13 +132,16 @@ const Projects: React.FC = () => {
                     <h3 className="text-3xl font-black text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
                       {project.title}
                     </h3>
+                    <p className="text-purple-400 font-semibold">{project.type}</p>
                   </div>
 
-                  <p className="text-gray-400 mb-6 leading-relaxed">{project.description}</p>
+                  <p className="text-gray-400 mb-6 leading-relaxed">
+                    {project.description}
+                  </p>
 
                   {/* Technologies */}
                   <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
+                    {project.skills.slice(0, 4).map((tech) => (
                       <span
                         key={tech}
                         className="px-3 py-1 text-sm bg-white/10 text-white rounded-full border border-white/20 hover:border-white/40 transition-colors duration-300"
@@ -152,6 +149,11 @@ const Projects: React.FC = () => {
                         {tech}
                       </span>
                     ))}
+                    {project.skills.length > 4 && (
+                      <span className="px-3 py-1 text-sm bg-white/10 text-white rounded-full border border-white/20">
+                        +{project.skills.length - 4} more
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -161,13 +163,14 @@ const Projects: React.FC = () => {
 
         {/* Other projects */}
         <div className="grid md:grid-cols-2 gap-8">
-          {projects.filter(p => !p.featured).map((project, index) => (
+          {otherProjects.map((project, index) => (
             <div
-              key={project.title}
-              className={`group relative transition-all duration-1000 ${
+              key={project.id}
+              className={`group relative transition-all duration-1000 cursor-pointer ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
               }`}
               style={{ transitionDelay: `${600 + index * 200}ms` }}
+              onClick={() => handleProjectClick(project.id)}
             >
               <div className="relative overflow-hidden rounded-2xl bg-black/40 backdrop-blur-sm border border-white/10 hover:border-white/30 transition-all duration-500 hover:scale-105">
                 {/* Project image */}
@@ -182,24 +185,35 @@ const Projects: React.FC = () => {
                 {/* Content */}
                 <div className="p-6">
                   <h4 className="text-xl font-bold text-white mb-2">{project.title}</h4>
-                  <p className="text-gray-400 text-sm mb-4">{project.description}</p>
+                  <p className="text-gray-400 text-sm mb-4">
+                    {project.description.length > 100 
+                      ? `${project.description.substring(0, 100)}...` 
+                      : project.description
+                    }
+                  </p>
 
                   <div className="flex justify-between items-center">
                     <div className="flex space-x-2">
                       <a
-                        href={project.liveUrl}
+                        href={project.demoLink}
+                        onClick={(e) => e.stopPropagation()}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors duration-300"
                       >
                         <ExternalLink size={16} className="text-white" />
                       </a>
                       <a
-                        href={project.githubUrl}
+                        href={project.githubLink}
+                        onClick={(e) => e.stopPropagation()}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors duration-300"
                       >
                         <Github size={16} className="text-white" />
                       </a>
                     </div>
-                    <span className="text-sm font-semibold text-white">{project.subtitle}</span>
+                    <span className="text-sm font-semibold text-purple-400">{project.type}</span>
                   </div>
                 </div>
               </div>
@@ -213,13 +227,10 @@ const Projects: React.FC = () => {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
           }`}
         >
-          <a
-            href="#"
-            className="inline-flex items-center space-x-3 px-10 py-5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-bold text-lg hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300"
-          >
-            <span>Explore All Projects</span>
+          <div className="inline-flex items-center space-x-3 px-10 py-5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-bold text-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300">
+            <span>Click any project to explore in detail</span>
             <ExternalLink size={20} />
-          </a>
+          </div>
         </div>
       </div>
     </section>

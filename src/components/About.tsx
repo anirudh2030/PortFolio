@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Zap, Palette, Rocket, Brain } from 'lucide-react';
+import { Zap, Palette, Rocket, Brain, ExternalLink } from 'lucide-react';
 
 const About: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -18,6 +18,24 @@ const About: React.FC = () => {
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
+
+  // Function to open CV in new tab
+  const handleViewCV = () => {
+    try {
+      // SOLUTION 1: If CV is in public folder
+      //window.open('/anirudhbhupathicv.pdf', '_blank');
+      
+      // SOLUTION 2: If CV is in assets folder (uncomment if using this approach)
+      // window.open('/assets/anirudhbhupathicv.pdf', '_blank');
+      
+      // SOLUTION 3: If CV is hosted externally
+      window.open('https://drive.google.com/file/d/1mkCpccOBzEyqpazp-yzj_AqSADBL8lX1/view?usp=drive_link', '_blank');
+      
+    } catch (error) {
+      console.error('Error opening CV:', error);
+      alert('Sorry, the CV could not be opened. Please try again later.');
+    }
+  };
 
   const philosophies = [
     {
@@ -50,7 +68,7 @@ const About: React.FC = () => {
     <section ref={sectionRef} id="about" className="py-20 md:py-32 px-6 relative overflow-hidden">
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-900/10 to-black" />
-      {/* Subtle floating orbs (optional) */}
+      {/* Subtle floating orbs */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(4)].map((_, i) => (
           <div
@@ -99,12 +117,13 @@ const About: React.FC = () => {
                   blur the line between digital and reality.
                 </p>
                 
-                <div className="flex flex-wrap gap-4">
-                  <button className="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-bold hover:scale-105 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-400">
-                    View Manifesto
-                  </button>
-                  <button className="px-6 py-3 md:px-8 md:py-4 border-2 border-purple-500 rounded-2xl font-bold hover:bg-purple-500/10 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-400">
-                    Download CV
+                <div className="flex justify-start">
+                  <button 
+                    onClick={handleViewCV}
+                    className="group px-6 py-3 md:px-8 md:py-4 border-2 border-purple-500 rounded-2xl font-bold hover:bg-purple-500/10 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-400 flex items-center gap-2"
+                  >
+                    <ExternalLink size={20} className="group-hover:animate-pulse" />
+                    View CV
                   </button>
                 </div>
               </div>
