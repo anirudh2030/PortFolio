@@ -161,65 +161,78 @@ const Projects: React.FC<ProjectsProps> = ({ onProjectClick }) => {
           ))}
         </div>
 
-        {/* Other projects */}
-        <div className="grid md:grid-cols-2 gap-8">
-          {otherProjects.map((project, index) => (
-            <div
-              key={project.id}
-              className={`group relative transition-all duration-1000 cursor-pointer ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-              }`}
-              style={{ transitionDelay: `${600 + index * 200}ms` }}
-              onClick={() => handleProjectClick(project.id)}
+       {/* Other projects */}
+<div className="grid md:grid-cols-2 gap-8">
+  {otherProjects.map((project, index) => (
+    <div
+      key={project.id}
+      className={`group relative transition-all duration-1000 cursor-pointer ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      }`}
+      style={{ transitionDelay: `${600 + index * 200}ms` }}
+      onMouseEnter={() => setActiveProject(index + featuredProjects.length)}
+      onMouseLeave={() => setActiveProject(null)}
+      onClick={() => handleProjectClick(project.id)}
+    >
+      <div className="relative overflow-hidden rounded-3xl bg-black/60 backdrop-blur-sm border border-white/10 hover:border-white/30 transition-all duration-500 hover:scale-105">
+        {/* Project image */}
+        <div className="relative h-48 overflow-hidden">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+
+          {/* Floating action buttons */}
+          <div
+            className={`absolute top-6 right-6 flex space-x-3 transition-all duration-500 ${
+              activeProject === index + featuredProjects.length ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+            }`}
+          >
+            <a
+              href={project.demoLink}
+              onClick={(e) => e.stopPropagation()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 hover:scale-110 transition-all duration-300"
             >
-              <div className="relative overflow-hidden rounded-2xl bg-black/40 backdrop-blur-sm border border-white/10 hover:border-white/30 transition-all duration-500 hover:scale-105">
-                {/* Project image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                </div>
+              <Play size={20} className="text-white" />
+            </a>
+            <a
+              href={project.githubLink}
+              onClick={(e) => e.stopPropagation()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 hover:scale-110 transition-all duration-300"
+            >
+              <Github size={20} className="text-white" />
+            </a>
+          </div>
 
-                {/* Content */}
-                <div className="p-6">
-                  <h4 className="text-xl font-bold text-white mb-2">{project.title}</h4>
-                  <p className="text-gray-400 text-sm mb-4">
-                    {project.description.length > 100 
-                      ? `${project.description.substring(0, 100)}...` 
-                      : project.description
-                    }
-                  </p>
-
-                  <div className="flex justify-between items-center">
-                    <div className="flex space-x-2">
-                      <a
-                        href={project.demoLink}
-                        onClick={(e) => e.stopPropagation()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors duration-300"
-                      >
-                        <ExternalLink size={16} className="text-white" />
-                      </a>
-                      <a
-                        href={project.githubLink}
-                        onClick={(e) => e.stopPropagation()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors duration-300"
-                      >
-                        <Github size={16} className="text-white" />
-                      </a>
-                    </div>
-                    <span className="text-sm font-semibold text-purple-400">{project.type}</span>
-                  </div>
-                </div>
-              </div>
+          {/* Featured badge */}
+          <div className="absolute top-6 left-6">
+            <div className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full">
+              <Sparkles size={16} className="text-white" />
+              <span className="text-white text-sm font-bold">FEATURED</span>
             </div>
-          ))}
+          </div>
         </div>
+
+        {/* Content */}
+        <div className="p-6">
+          <h4 className="text-xl font-bold text-white mb-2">{project.title}</h4>
+          <p className="text-gray-400 text-sm mb-4">
+            {project.description.length > 100
+              ? `${project.description.substring(0, 100)}...`
+              : project.description}
+          </p>
+          <span className="text-sm font-semibold text-purple-400">{project.type}</span>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
 
         {/* Call to action */}
         <div
